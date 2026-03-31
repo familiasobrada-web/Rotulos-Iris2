@@ -4,7 +4,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Rótulos Iris · App sincronizada</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@1"></script>
   <meta name="theme-color" content="#0f172a" />
 
   <style>
@@ -21,6 +20,7 @@
       --success-2:#15803d;
       --warning:#f59e0b;
       --danger:#dc2626;
+      --danger-2:#b91c1c;
       --shadow:0 14px 36px rgba(15,23,42,.08);
       --radius:20px;
     }
@@ -34,13 +34,8 @@
       font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
     }
 
-    body{
-      min-height:100vh;
-    }
-
-    .app-shell{
-      min-height:100vh;
-    }
+    body{min-height:100vh}
+    #app{min-height:100vh}
 
     .wrap{
       width:min(1380px,100%);
@@ -50,7 +45,7 @@
 
     .topbar{
       display:flex;
-      align-items:center;
+      align-items:flex-start;
       justify-content:space-between;
       gap:16px;
       margin-bottom:20px;
@@ -75,10 +70,6 @@
       font-size:22px;
       box-shadow:var(--shadow);
       flex:0 0 auto;
-    }
-
-    .brand-copy{
-      min-width:0;
     }
 
     .brand-copy h1{
@@ -134,7 +125,8 @@
     .kpi,
     .job-card,
     .task-card,
-    .login-card{
+    .login-card,
+    .report-card{
       background:var(--panel);
       border:1px solid rgba(226,232,240,.95);
       box-shadow:var(--shadow);
@@ -235,9 +227,7 @@
       letter-spacing:-.04em;
     }
 
-    .panel{
-      padding:18px;
-    }
+    .panel{padding:18px}
 
     .panel h2{
       margin:0 0 6px;
@@ -261,12 +251,6 @@
     .grid-2{
       display:grid;
       grid-template-columns:1.2fr .8fr;
-      gap:14px;
-    }
-
-    .grid-3{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
       gap:14px;
     }
 
@@ -372,7 +356,7 @@
 
     .time-value{
       margin-top:6px;
-      font-size:46px;
+      font-size:40px;
       line-height:1;
       font-weight:900;
       letter-spacing:-.05em;
@@ -428,9 +412,6 @@
     }
 
     .report-card{
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:18px;
       padding:16px;
     }
 
@@ -492,16 +473,9 @@
       color:#0f172a;
     }
 
-    input,
-    select,
-    textarea,
-    button{
-      font:inherit;
-    }
+    input, select, textarea, button{font:inherit}
 
-    input,
-    select,
-    textarea{
+    input, select, textarea{
       width:100%;
       border:1px solid #dbe3ee;
       background:#fff;
@@ -512,9 +486,7 @@
       transition:border-color .18s ease, box-shadow .18s ease, transform .18s ease;
     }
 
-    input:focus,
-    select:focus,
-    textarea:focus{
+    input:focus, select:focus, textarea:focus{
       border-color:#93c5fd;
       box-shadow:0 0 0 4px rgba(37,99,235,.10);
     }
@@ -544,34 +516,6 @@
     .btn-soft{background:#eef4ff;color:#1d4ed8}
     .btn-gray{background:#e2e8f0;color:#475569}
 
-    .worker-picker{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:6px;
-    }
-
-    .worker-pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 12px;
-      border-radius:999px;
-      border:1px solid #dbe3ee;
-      background:#fff;
-      cursor:pointer;
-      font-weight:700;
-      color:#334155;
-      user-select:none;
-    }
-
-    .worker-pill input{display:none}
-    .worker-pill.active{
-      background:#eff6ff;
-      border-color:#93c5fd;
-      color:#1d4ed8;
-    }
-
     .empty{
       padding:28px;
       border:1px dashed #cbd5e1;
@@ -581,12 +525,6 @@
       background:#f8fafc;
       margin-top:16px;
     }
-
-    .muted{color:var(--muted)}
-    .hidden{display:none !important}
-    .mt-14{margin-top:14px}
-    .mt-18{margin-top:18px}
-    .mt-22{margin-top:22px}
 
     .error-box{
       margin-top:14px;
@@ -610,6 +548,20 @@
       font-weight:700;
     }
 
+    .loader{
+      width:54px;
+      height:54px;
+      border-radius:50%;
+      border:4px solid #dbeafe;
+      border-top-color:#2563eb;
+      animation:spin 1s linear infinite;
+      margin:80px auto;
+    }
+
+    @keyframes spin{
+      to{transform:rotate(360deg)}
+    }
+
     @media (max-width:1180px){
       .kpis{grid-template-columns:repeat(3,1fr)}
       .tasks-grid{grid-template-columns:1fr 1fr}
@@ -620,8 +572,7 @@
       .layout{grid-template-columns:1fr}
       .sidebar{position:static}
       .toolbar,
-      .grid-2,
-      .grid-3{grid-template-columns:1fr}
+      .grid-2{grid-template-columns:1fr}
       .job-top{flex-direction:column}
       .job-times{text-align:left;min-width:0}
       .kpis{grid-template-columns:1fr 1fr}
@@ -644,7 +595,7 @@
       .manual-grid,
       .hours-grid{grid-template-columns:1fr}
       .kpi .value{font-size:28px}
-      .time-value{font-size:38px}
+      .time-value{font-size:34px}
       .btn{width:100%}
       input,select,textarea{font-size:16px}
       .userbox{width:100%;justify-content:flex-start}
@@ -691,7 +642,7 @@
     };
 
     const app = document.getElementById('app');
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     let tickTimer = null;
     let realtimeChannel = null;
 
@@ -745,15 +696,6 @@
       return [value].filter(Boolean);
     }
 
-    function profileNameById(id){
-      const found = state.profiles.find(p => String(p.id) === String(id));
-      return found?.display_name || 'Usuario';
-    }
-
-    function assignedNames(ids){
-      return normalizeAssignedTo(ids).map(profileNameById);
-    }
-
     function currentUserId(){
       return state.session?.user?.id || null;
     }
@@ -766,9 +708,18 @@
       return state.profile?.role === 'worker';
     }
 
+    function profileNameById(id){
+      const found = state.profiles.find(p => String(p.id) === String(id));
+      return found?.display_name || 'Usuario';
+    }
+
+    function assignedNames(ids){
+      return normalizeAssignedTo(ids).map(profileNameById);
+    }
+
     function taskMyTime(task){
       return (task.user_times || []).find(
-        x => String(x.user_id) === String(currentUserId())
+        row => String(row.user_id) === String(currentUserId())
       ) || null;
     }
 
@@ -776,7 +727,7 @@
       if(!task.user_times?.length) return 0;
 
       return task.user_times.reduce((total, row) => {
-        if(row.started_at_ms){
+        if(row.running && row.started_at_ms){
           return total + (row.elapsed_ms || 0) + (Date.now() - row.started_at_ms);
         }
         return total + (row.elapsed_ms || 0);
@@ -786,7 +737,7 @@
     function taskMyMs(task){
       const row = taskMyTime(task);
       if(!row) return 0;
-      if(row.started_at_ms){
+      if(row.running && row.started_at_ms){
         return (row.elapsed_ms || 0) + (Date.now() - row.started_at_ms);
       }
       return row.elapsed_ms || 0;
@@ -794,7 +745,7 @@
 
     function taskIsRunningForMe(task){
       const row = taskMyTime(task);
-      return !!row?.started_at_ms;
+      return !!(row?.running && row?.started_at_ms);
     }
 
     function jobTotalMs(job){
@@ -821,6 +772,7 @@
             ...assignedNames(job.assigned_to),
             ...(job.tasks || []).map(t => t.name)
           ].join(' ').toLowerCase();
+
           return haystack.includes(q);
         });
       }
@@ -838,19 +790,19 @@
       return rows;
     }
 
-    function workerProfiles(){
-      return state.profiles.filter(p => p.role === 'worker');
-    }
-
     function metrics(){
       const rows = visibleJobs();
       const totalMs = rows.reduce((sum, job) => sum + jobTotalMs(job), 0);
       const activeTasks = rows.reduce((sum, job) => {
-        return sum + (job.tasks || []).filter(t => (t.user_times || []).some(x => !!x.started_at_ms)).length;
+        return sum + (job.tasks || []).filter(task =>
+          (task.user_times || []).some(row => row.running && row.started_at_ms)
+        ).length;
       }, 0);
 
       const visibleUsers = new Set();
-      rows.forEach(job => normalizeAssignedTo(job.assigned_to).forEach(id => visibleUsers.add(String(id))));
+      rows.forEach(job => {
+        normalizeAssignedTo(job.assigned_to).forEach(id => visibleUsers.add(String(id)));
+      });
 
       return {
         jobs: rows.length,
@@ -861,40 +813,51 @@
       };
     }
 
+    function workerProfiles(){
+      return state.profiles.filter(p => p.role === 'worker');
+    }
+
     function clearNotice(){
       state.error = '';
       state.info = '';
     }
 
-    async function initSupabase(){
-      if(!SUPABASE_URL || !SUPABASE_ANON_KEY || SUPABASE_ANON_KEY.includes('sb_publishable_6_ewdXEtND8whXtkNqzLgg_oSEKnvF_')){
-        state.loading = false;
-        state.error = 'Falta pegar la publishable key de Supabase en el index.html.';
-        render();
-        return;
+    function stopTicking(){
+      if(tickTimer){
+        clearInterval(tickTimer);
+        tickTimer = null;
       }
-
-      supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      const { data } = await supabase.auth.getSession();
-      state.session = data.session || null;
-
-      supabase.auth.onAuthStateChange((_event, session) => {
-        state.session = session || null;
-        bootstrap();
-      });
-
-      bootstrap();
     }
 
-    async function bootstrap(){
-      clearNotice();
-      state.loading = true;
-      render();
+    function startTicking(){
+      stopTicking();
+      tickTimer = setInterval(() => {
+        refreshLiveTimes();
+      }, 1000);
+    }
 
-      if(!supabase){
-        state.loading = false;
+    async function bindRealtime(enabled){
+      if(realtimeChannel){
+        await supabase.removeChannel(realtimeChannel);
+        realtimeChannel = null;
+      }
+
+      if(!enabled) return;
+
+      realtimeChannel = supabase
+        .channel('rotulos-iris-realtime')
+        .on('postgres_changes', { event:'*', schema:'public', table:'jobs' }, () => bootstrap(false))
+        .on('postgres_changes', { event:'*', schema:'public', table:'tasks' }, () => bootstrap(false))
+        .on('postgres_changes', { event:'*', schema:'public', table:'task_user_times' }, () => bootstrap(false))
+        .on('postgres_changes', { event:'*', schema:'public', table:'profiles' }, () => bootstrap(false))
+        .subscribe();
+    }
+
+    async function bootstrap(showLoader = true){
+      clearNotice();
+      if(showLoader){
+        state.loading = true;
         render();
-        return;
       }
 
       if(!state.session){
@@ -902,21 +865,26 @@
         state.profiles = [];
         state.jobs = [];
         state.loading = false;
-        renderLogin();
         stopTicking();
         await bindRealtime(false);
+        render();
         return;
       }
 
       const uid = currentUserId();
 
-      const [
-        profileRes,
-        profilesRes,
-        jobsRes
-      ] = await Promise.all([
-        supabase.from('profiles').select('*').eq('id', uid).maybeSingle(),
-        supabase.from('profiles').select('*').order('display_name', { ascending:true }),
+      const [profileRes, profilesRes, jobsRes] = await Promise.all([
+        supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', uid)
+          .maybeSingle(),
+
+        supabase
+          .from('profiles')
+          .select('*')
+          .order('display_name', { ascending:true }),
+
         supabase
           .from('jobs')
           .select(`
@@ -959,66 +927,61 @@
       }
 
       state.loading = false;
-      render();
       startTicking();
       await bindRealtime(true);
+      render();
     }
 
-    function startTicking(){
-      stopTicking();
-      tickTimer = setInterval(() => {
-        refreshLiveTimes();
-      }, 1000);
-    }
+    async function initApp(){
+      try{
+        const { data, error } = await supabase.auth.getSession();
+        if(error) throw error;
+        state.session = data.session || null;
 
-    function stopTicking(){
-      if(tickTimer){
-        clearInterval(tickTimer);
-        tickTimer = null;
+        supabase.auth.onAuthStateChange(async (_event, session) => {
+          state.session = session || null;
+          await bootstrap(false);
+        });
+
+        await bootstrap();
+      }catch(err){
+        state.loading = false;
+        state.error = err?.message || 'Error al iniciar la aplicación.';
+        render();
       }
-    }
-
-    async function bindRealtime(enabled){
-      if(realtimeChannel){
-        await supabase.removeChannel(realtimeChannel);
-        realtimeChannel = null;
-      }
-
-      if(!enabled || !supabase) return;
-      realtimeChannel = supabase
-        .channel('realtime-iris')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'jobs' }, bootstrap)
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, bootstrap)
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'task_user_times' }, bootstrap)
-        .subscribe();
     }
 
     async function login(email, password){
-  clearNotice();
-  render();
+      clearNotice();
+      state.loading = true;
+      render();
 
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: email,
-    password: password
-  });
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
 
-  if(error){
-    state.error = error.message;
-    render();
-    return;
-  }
+      if(error){
+        state.loading = false;
+        state.error = error.message;
+        render();
+        return;
+      }
 
-  state.session = data.session || null;
-  state.user = data.user || null;
-  state.view = 'trabajos';
-
-  await bootstrap();
-}
+      state.session = data.session || null;
+      await bootstrap(false);
+    }
 
     async function logout(){
+      clearNotice();
       await supabase.auth.signOut();
       state.view = 'trabajos';
-      clearNotice();
+      state.session = null;
+      state.profile = null;
+      state.jobs = [];
+      state.loading = false;
+      stopTicking();
+      await bindRealtime(false);
       render();
     }
 
@@ -1026,15 +989,20 @@
       clearNotice();
 
       const name = form.name.value.trim();
+      const projectType = form.project_type.value || null;
+      const operario = form.operario.value.trim() || null;
+      const description = form.description.value.trim() || null;
+      const plannedStart = fromDatetimeLocal(form.planned_start.value);
+      const plannedEnd = fromDatetimeLocal(form.planned_end.value);
+      const assigned = Array.from(
+        form.querySelectorAll('input[name="assigned"]:checked')
+      ).map(i => i.value);
+
       if(!name){
         state.error = 'Pon un nombre al trabajo.';
         render();
         return;
       }
-
-      const assigned = Array.from(
-        form.querySelectorAll('input[name="assigned"]:checked')
-      ).map(i => i.value);
 
       if(!assigned.length){
         state.error = 'Selecciona al menos un operario.';
@@ -1046,11 +1014,13 @@
         .from('jobs')
         .insert({
           name,
-          project_type: form.project_type.value || null,
-          operario: form.operario.value.trim() || null,
-          description: form.description.value.trim() || null,
+          project_type: projectType,
+          operario,
+          description,
           assigned_to: assigned,
-          created_by: currentUserId()
+          created_by: currentUserId(),
+          planned_start: plannedStart,
+          planned_end: plannedEnd
         })
         .select()
         .single();
@@ -1061,118 +1031,233 @@
         return;
       }
 
-      const tasks = DEFAULT_TASKS.map((name, i) => ({
+      const taskRows = DEFAULT_TASKS.map((taskName, index) => ({
         job_id: job.id,
-        name,
-        task_order: i + 1,
-        created_by: currentUserId()
+        name: taskName,
+        task_order: index + 1,
+        created_by: currentUserId(),
+        actual_start: null,
+        actual_end: null
       }));
 
-      const { data: createdTasks } = await supabase
+      const { data: createdTasks, error: taskError } = await supabase
         .from('tasks')
-        .insert(tasks)
+        .insert(taskRows)
         .select();
 
-      const rows = [];
+      if(taskError){
+        state.error = taskError.message;
+        render();
+        return;
+      }
+
+      const timeRows = [];
       for(const task of createdTasks || []){
-        for(const uid of assigned){
-          rows.push({
+        for(const userId of assigned){
+          timeRows.push({
             task_id: task.id,
-            user_id: uid,
+            user_id: userId,
             elapsed_ms: 0,
-            running: false
+            running: false,
+            started_at_ms: null,
+            actual_start: null,
+            actual_end: null
           });
         }
       }
 
-      if(rows.length){
-        await supabase.from('task_user_times').insert(rows);
+      if(timeRows.length){
+        const { error: timeError } = await supabase
+          .from('task_user_times')
+          .insert(timeRows);
+
+        if(timeError){
+          state.error = timeError.message;
+          render();
+          return;
+        }
       }
 
       form.reset();
-      state.info = 'Trabajo creado correctamente';
-      bootstrap();
+      state.info = 'Trabajo creado correctamente.';
+      await bootstrap(false);
     }
 
     async function deleteJob(jobId){
       if(!confirm('¿Eliminar este trabajo?')) return;
 
-      await supabase.from('jobs').delete().eq('id', jobId);
-      bootstrap();
+      const { error } = await supabase
+        .from('jobs')
+        .delete()
+        .eq('id', jobId);
+
+      if(error){
+        state.error = error.message;
+        render();
+        return;
+      }
+
+      state.info = 'Trabajo eliminado.';
+      await bootstrap(false);
     }
 
     async function updateTaskName(taskId, value){
-      await supabase.from('tasks').update({ name: value }).eq('id', taskId);
+      const clean = value.trim() || 'Sin nombre';
+
+      const { error } = await supabase
+        .from('tasks')
+        .update({ name: clean })
+        .eq('id', taskId);
+
+      if(error){
+        state.error = error.message;
+        render();
+        return;
+      }
+
+      await bootstrap(false);
     }
 
-    async function startTask(task){
-      const row = taskMyTime(task);
+    async function startTask(taskId){
+      const task = state.jobs.flatMap(job => job.tasks || []).find(t => t.id === taskId);
+      const row = task ? taskMyTime(task) : null;
       if(!row) return;
 
-      await supabase
+      const nowIso = new Date().toISOString();
+
+      const payload = {
+        running: true,
+        started_at_ms: Date.now()
+      };
+
+      if(!row.actual_start){
+        payload.actual_start = nowIso;
+      }
+
+      const { error } = await supabase
         .from('task_user_times')
-        .update({
-          started_at_ms: Date.now(),
-          running: true
-        })
+        .update(payload)
         .eq('id', row.id);
+
+      if(error){
+        state.error = error.message;
+        render();
+        return;
+      }
+
+      await bootstrap(false);
     }
 
-    async function stopTask(task){
-      const row = taskMyTime(task);
+    async function stopTask(taskId){
+      const task = state.jobs.flatMap(job => job.tasks || []).find(t => t.id === taskId);
+      const row = task ? taskMyTime(task) : null;
       if(!row) return;
 
-      const extra = row.started_at_ms ? (Date.now() - row.started_at_ms) : 0;
+      const extra = row.running && row.started_at_ms
+        ? (Date.now() - row.started_at_ms)
+        : 0;
 
-      await supabase
+      const { error } = await supabase
         .from('task_user_times')
         .update({
           elapsed_ms: (row.elapsed_ms || 0) + extra,
+          running: false,
           started_at_ms: null,
-          running: false
+          actual_end: new Date().toISOString()
         })
         .eq('id', row.id);
-    }
 
-    async function manualTime(task, h, m){
-      const ms = (Number(h || 0) * 3600000) + (Number(m || 0) * 60000);
-
-      const rows = task.user_times || [];
-      if(!rows.length) return;
-
-      const each = Math.floor(ms / rows.length);
-
-      for(const r of rows){
-        await supabase
-          .from('task_user_times')
-          .update({
-            elapsed_ms: each,
-            started_at_ms: null,
-            running: false
-          })
-          .eq('id', r.id);
+      if(error){
+        state.error = error.message;
+        render();
+        return;
       }
+
+      await bootstrap(false);
     }
 
-    async function updateActualTimes(task, start, end){
-      await supabase
-        .from('tasks')
+    async function manualTime(taskId, hours, minutes){
+      const task = state.jobs.flatMap(job => job.tasks || []).find(t => t.id === taskId);
+      if(!task) return;
+
+      const row = taskMyTime(task);
+      if(!row) return;
+
+      const totalMs = (Number(hours || 0) * 3600000) + (Number(minutes || 0) * 60000);
+
+      const { error } = await supabase
+        .from('task_user_times')
         .update({
-          actual_start: start,
-          actual_end: end
+          elapsed_ms: totalMs,
+          running: false,
+          started_at_ms: null
         })
-        .eq('id', task.id);
+        .eq('id', row.id);
+
+      if(error){
+        state.error = error.message;
+        render();
+        return;
+      }
+
+      await bootstrap(false);
+    }
+
+    async function updateActualTimes(taskId, start, end){
+      const task = state.jobs.flatMap(job => job.tasks || []).find(t => t.id === taskId);
+      if(!task) return;
+
+      const row = taskMyTime(task);
+      if(!row) return;
+
+      const startIso = fromDatetimeLocal(start);
+      const endIso = fromDatetimeLocal(end);
+
+      const { error } = await supabase
+        .from('task_user_times')
+        .update({
+          actual_start: startIso,
+          actual_end: endIso
+        })
+        .eq('id', row.id);
+
+      if(error){
+        state.error = error.message;
+        render();
+        return;
+      }
+
+      await bootstrap(false);
     }
 
     function refreshLiveTimes(){
-      document.querySelectorAll('[data-live-ms]').forEach(el => {
-        const ms = Number(el.dataset.liveMs || 0);
+      document.querySelectorAll('[data-task-id]').forEach(el => {
+        const taskId = el.dataset.taskId;
+        const type = el.dataset.liveType;
+
+        const task = state.jobs.flatMap(job => job.tasks || []).find(t => t.id === taskId);
+        if(!task) return;
+
+        const ms = type === 'my' ? taskMyMs(task) : taskTotalMs(task);
         el.textContent = hms(ms);
       });
+
+      document.querySelectorAll('[data-job-id]').forEach(el => {
+        const jobId = el.dataset.jobId;
+        const job = state.jobs.find(j => j.id === jobId);
+        if(!job) return;
+        el.textContent = `${hoursDecimal(jobTotalMs(job))} h`;
+      });
+
+      const totalVisible = visibleJobs().reduce((sum, job) => sum + jobTotalMs(job), 0);
+      const globalEl = document.getElementById('live-total-hours');
+      if(globalEl){
+        globalEl.textContent = `${hoursDecimal(totalVisible)} h`;
+      }
     }
 
-    function renderLogin(){
-      app.innerHTML = `
+   function renderLogin(){
+      return `
         <div class="login-shell">
           <div class="login-card">
             <h2>Iniciar sesión</h2>
@@ -1187,40 +1272,76 @@
               <label>Contraseña</label>
               <input type="password" name="password" required />
 
-              <div class="mt-18">
-                <button class="btn btn-primary" style="width:100%">Entrar</button>
+              <div style="margin-top:18px">
+                <button class="btn btn-primary" style="width:100%" ${state.loading ? 'disabled' : ''}>
+                  ${state.loading ? 'Entrando…' : 'Entrar'}
+                </button>
               </div>
             </form>
           </div>
         </div>
       `;
-
-      document.getElementById('login-form').onsubmit = e => {
-        e.preventDefault();
-        login(e.target.email.value, e.target.password.value);
-      };
     }
+
     function renderHeader(){
+      const m = metrics();
+
       return `
-        <div class="topbar">
-          <div>
-            <div class="title">Rótulos Iris</div>
-            <div class="subtitle">
-              ${esc(state.profile?.display_name || '')}
+        <div class="hero">
+          <div class="topbar">
+            <div class="brand">
+              <div class="logo">RI</div>
+              <div class="brand-copy">
+                <h1>Rótulos Iris · App sincronizada</h1>
+                <p>General gestiona trabajos y los operarios ven sus tareas en PC y móvil.</p>
+              </div>
+            </div>
+
+            <div class="userbox">
+              <span class="chip">${esc(state.profile?.display_name || '')}</span>
+              <span class="chip gray">Rol: ${esc(state.profile?.role || '')}</span>
+              <button class="btn btn-gray" data-action="logout">Cerrar sesión</button>
             </div>
           </div>
 
-          <div style="display:flex; gap:10px;">
-            <select onchange="state.selectedUser=this.value; render()">
-              <option value="all">Todos</option>
-              ${state.profiles.map(p => `
-                <option value="${p.id}" ${state.selectedUser===p.id?'selected':''}>
-                  ${esc(p.display_name)}
-                </option>
-              `).join('')}
-            </select>
+          <div class="kpis">
+            <div class="kpi">
+              <div class="label">Trabajos visibles</div>
+              <div class="value">${m.jobs}</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Horas acumuladas</div>
+              <div class="value" id="live-total-hours">${hoursDecimal(m.totalMs)} h</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Temporizadores activos</div>
+              <div class="value">${m.activeTasks}</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Usuarios visibles</div>
+              <div class="value">${m.users}</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Trabajos con horas</div>
+              <div class="value">${m.jobsWithHours}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
 
-            <button class="btn btn-ghost" onclick="logout()">Salir</button>
+    function renderSidebar(){
+      return `
+        <div class="sidebar">
+          <div class="nav-title">Navegación</div>
+          <div class="nav">
+            <button class="${state.view === 'trabajos' ? 'active' : ''}" data-view="trabajos">Trabajos</button>
+            ${isGeneral() ? `<button class="${state.view === 'informes' ? 'active' : ''}" data-view="informes">Informes</button>` : ''}
+          </div>
+
+          <div class="side-meta">
+            <div>Usuario activo: <strong>${esc(state.profile?.display_name || '')}</strong></div>
+            <div>Rol: <strong>${esc(state.profile?.role || '')}</strong></div>
           </div>
         </div>
       `;
@@ -1230,26 +1351,42 @@
       if(!isGeneral()) return '';
 
       return `
-        <div class="card">
-          <h3>Nuevo trabajo</h3>
+        <div class="panel">
+          <h2>Nuevo trabajo</h2>
+          <p class="subtext">Crea un trabajo y asígnalo a uno o varios operarios.</p>
 
-          <form id="job-form">
-            <input name="name" placeholder="Nombre" required />
-            <input name="project_type" placeholder="Tipo (Vinilo...)" />
-            <input name="operario" placeholder="Operario" />
-            <textarea name="description" placeholder="Descripción"></textarea>
+          <form id="job-form" style="margin-top:18px">
+            <div class="toolbar" style="grid-template-columns:1fr 1fr;">
+              <input name="name" placeholder="Nombre del trabajo" required />
+              <select name="project_type">
+                <option value="">Tipo de proyecto</option>
+                ${PROJECT_TYPES.map(type => `<option value="${esc(type)}">${esc(type)}</option>`).join('')}
+              </select>
+            </div>
 
-            <div class="mt-12">
-              <strong>Asignar a:</strong><br>
-              ${state.profiles.map(p => `
-                <label style="display:block">
+            <div class="toolbar" style="grid-template-columns:1fr 1fr;">
+              <input name="operario" placeholder="Operario principal" />
+              <input type="text" disabled value="Se crearán 3 tareas por defecto" />
+            </div>
+
+            <div class="grid-2">
+              <input name="planned_start" type="datetime-local" />
+              <input name="planned_end" type="datetime-local" />
+            </div>
+
+            <textarea name="description" placeholder="Descripción del trabajo"></textarea>
+
+            <label>Asignar a operarios</label>
+            <div class="worker-picker">
+              ${workerProfiles().map(p => `
+                <label class="worker-pill">
                   <input type="checkbox" name="assigned" value="${p.id}">
                   ${esc(p.display_name)}
                 </label>
               `).join('')}
             </div>
 
-            <div class="mt-18">
+            <div style="margin-top:18px">
               <button class="btn btn-primary">Crear trabajo</button>
             </div>
           </form>
@@ -1257,150 +1394,335 @@
       `;
     }
 
-    function renderTask(task, job){
-      const rows = task.user_times || [];
-
-      const total = rows.reduce((sum, r) => {
-        if(r.running && r.started_at_ms){
-          return sum + (r.elapsed_ms || 0) + (Date.now() - r.started_at_ms);
-        }
-        return sum + (r.elapsed_ms || 0);
-      }, 0);
-
-      const my = taskMyTime(task);
-      const running = my?.running;
+    function renderTask(task){
+      const myRow = taskMyTime(task);
+      const running = taskIsRunningForMe(task);
+      const total = taskTotalMs(task);
+      const myMs = taskMyMs(task);
 
       return `
-        <div class="task">
-          <input value="${esc(task.name)}"
-            onblur="updateTaskName('${task.id}', this.value)" />
+        <div class="task-card">
+          <div class="task-title">${esc(task.name || 'Sin nombre')}</div>
 
-          <div class="mini">Tiempo acumulado</div>
-          <div class="time" data-live-ms="${total}">
-            ${hms(total)}
+          <div class="time-label">${isWorker() ? 'Tu tiempo' : 'Tiempo total'}</div>
+          <div class="time-value" data-live-type="${isWorker() ? 'my' : 'total'}" data-task-id="${task.id}">
+            ${hms(isWorker() ? myMs : total)}
           </div>
 
-          <div class="mini">
-            ${running ? '🟢 Activo' : '⏸️ Parado'}
-          </div>
-
-          <div class="task-actions">
-            ${
-              my
-              ? (
-                  running
-                  ? `<button class="btn btn-amber" onclick="stopTask(${JSON.stringify(task)})">Parar</button>`
-                  : `<button class="btn btn-green" onclick="startTask(${JSON.stringify(task)})">Inicio</button>`
-                )
-              : ''
+          <div class="task-status">
+            ${isWorker()
+              ? (running ? '🟢 Temporizador activo' : '⏸️ Temporizador parado')
+              : 'Vista general'
             }
           </div>
 
-          <div class="manual">
-            <input id="h_${task.id}" placeholder="h">
-            <input id="m_${task.id}" placeholder="m">
+          <label>Nombre de tarea</label>
+          <input id="task_name_${task.id}" value="${esc(task.name || '')}" />
 
-            <button class="btn btn-soft"
-              onclick="manualTime(
-                ${JSON.stringify(task)},
-                document.getElementById('h_${task.id}').value,
-                document.getElementById('m_${task.id}').value
-              )">
-              Modificar
+          <div class="task-actions">
+            ${isWorker() && myRow ? (
+              running
+                ? `<button class="btn btn-warning" data-action="stop-task" data-task-id="${task.id}">Parar</button>`
+                : `<button class="btn btn-success" data-action="start-task" data-task-id="${task.id}">Inicio</button>`
+            ) : `<button class="btn btn-gray" disabled>Sin temporizador</button>`}
+
+            <button class="btn btn-soft" data-action="save-task-name" data-task-id="${task.id}">
+              Guardar nombre
             </button>
           </div>
 
-          ${
-            isGeneral()
-            ? `
-              <details>
-                <summary>Horas reales</summary>
+          ${isGeneral() ? `
+            <div class="manual-grid">
+              <input id="h_${task.id}" type="number" min="0" placeholder="Horas">
+              <input id="m_${task.id}" type="number" min="0" max="59" placeholder="Minutos">
+              <button class="btn btn-soft" data-action="manual-time" data-task-id="${task.id}">
+                Modificar tiempo
+              </button>
+            </div>
+          ` : ''}
 
-                <input type="datetime-local" id="s_${task.id}">
-                <input type="datetime-local" id="e_${task.id}">
+          <details>
+            <summary>${isGeneral() ? 'Horas reales (por tu control)' : 'Tus horas reales'}</summary>
 
-                <button class="btn btn-soft"
-                  onclick="updateActualTimes(
-                    ${JSON.stringify(task)},
-                    document.getElementById('s_${task.id}').value,
-                    document.getElementById('e_${task.id}').value
-                  )">
-                  Guardar
-                </button>
-              </details>
-            `
-            : ''
-          }
+            <div class="hours-grid">
+              <input id="s_${task.id}" type="datetime-local" value="${toDatetimeLocal(myRow?.actual_start || '')}">
+              <input id="e_${task.id}" type="datetime-local" value="${toDatetimeLocal(myRow?.actual_end || '')}">
+              <button class="btn btn-soft" data-action="save-actual" data-task-id="${task.id}">
+                Guardar
+              </button>
+            </div>
+
+            <div class="hours-meta">
+              Inicio real: ${fmtDate(myRow?.actual_start || '')}<br>
+              Fin real: ${fmtDate(myRow?.actual_end || '')}
+            </div>
+          </details>
         </div>
       `;
     }
-    function renderJobs(){
-      return state.jobs.map(job => {
-        const tasks = state.tasks
-          .filter(t => t.job_id === job.id)
-          .map(t => ({
-            ...t,
-            user_times: state.times.filter(r => r.task_id === t.id)
-          }))
-          .sort((a,b) => (a.task_order || 0) - (b.task_order || 0));
 
-        return `
-          <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <div>
-                <h3>${esc(job.name)}</h3>
-                <div class="mini">
-                  ${esc(job.project_type || '')} · ${esc(job.operario || '')}
+    function renderJobs(){
+      const rows = visibleJobs();
+
+      if(!rows.length){
+        return `<div class="empty">No hay trabajos para mostrar.</div>`;
+      }
+
+      return `
+        <div class="jobs-list">
+          ${rows.map(job => `
+            <div class="job-card">
+              <div class="job-top">
+                <div>
+                  <h3 class="job-title">${esc(job.name)}</h3>
+                  <div class="job-badges">
+                    <span class="badge primary">${esc(job.project_type || 'Sin tipo')}</span>
+                    <span class="badge dark">${esc(job.operario || 'Sin operario')}</span>
+                    <span class="badge success">${assignedNames(job.assigned_to).join(', ') || 'Sin asignados'}</span>
+                    <span class="badge warning" data-job-id="${job.id}">${hoursDecimal(jobTotalMs(job))} h</span>
+                  </div>
+                  ${job.description ? `<p class="job-desc">${esc(job.description)}</p>` : ''}
+                </div>
+
+                <div class="job-times">
+                  <div>Inicio previsto: ${fmtDate(job.planned_start)}</div>
+                  <div>Fin previsto: ${fmtDate(job.planned_end)}</div>
                 </div>
               </div>
 
-              ${
-                isGeneral()
-                ? `<button class="btn btn-danger" onclick="deleteJob('${job.id}')">Eliminar</button>`
-                : ''
-              }
-            </div>
+              ${isGeneral() ? `
+                <div class="job-actions">
+                  <button class="btn btn-danger" data-action="delete-job" data-job-id="${job.id}">
+                    Eliminar trabajo
+                  </button>
+                </div>
+              ` : ''}
 
-            <div class="task-grid mt-18">
-              ${tasks.map(t => renderTask(t, job)).join('')}
+              <div class="tasks-grid">
+                ${(job.tasks || []).map(task => renderTask(task)).join('')}
+              </div>
             </div>
-          </div>
-        `;
-      }).join('');
+          `).join('')}
+        </div>
+      `;
     }
 
-    function render(){
+    function renderReports(){
+      if(!isGeneral()) return '';
+
+      const projectRows = visibleJobs()
+        .map(job => ({
+          name: job.name,
+          totalMs: jobTotalMs(job)
+        }))
+        .sort((a,b) => b.totalMs - a.totalMs);
+
+      const userTotals = new Map();
+      for(const job of state.jobs){
+        for(const task of (job.tasks || [])){
+          for(const row of (task.user_times || [])){
+            const prev = userTotals.get(String(row.user_id)) || 0;
+            const now = prev + (row.elapsed_ms || 0) + ((row.running && row.started_at_ms) ? (Date.now() - row.started_at_ms) : 0);
+            userTotals.set(String(row.user_id), now);
+          }
+        }
+      }
+
+      const userRows = [...userTotals.entries()]
+        .map(([id, totalMs]) => ({
+          name: profileNameById(id),
+          totalMs
+        }))
+        .sort((a,b) => b.totalMs - a.totalMs);
+
+      return `
+        <div class="panel">
+          <h2>Informes</h2>
+          <p class="subtext">Vista solo para usuario general.</p>
+
+          <div class="report-grid">
+            <div class="report-card">
+              <h3>Horas por usuario</h3>
+              <div class="report-list">
+                ${userRows.length ? userRows.map(row => `
+                  <div class="report-row">
+                    <span>${esc(row.name)}</span>
+                    <strong>${hoursDecimal(row.totalMs)} h</strong>
+                  </div>
+                `).join('') : `<div class="empty">Sin datos</div>`}
+              </div>
+            </div>
+
+            <div class="report-card">
+              <h3>Horas por trabajo</h3>
+              <div class="report-list">
+                ${projectRows.length ? projectRows.map(row => `
+                  <div class="report-row">
+                    <span>${esc(row.name)}</span>
+                    <strong>${hoursDecimal(row.totalMs)} h</strong>
+                  </div>
+                `).join('') : `<div class="empty">Sin datos</div>`}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderMain(){
+      return `
+        <div class="wrap">
+          ${renderHeader()}
+
+          <div class="layout">
+            ${renderSidebar()}
+
+            <div class="content">
+              ${state.error ? `<div class="error-box">${esc(state.error)}</div>` : ''}
+              ${state.info ? `<div class="ok-box">${esc(state.info)}</div>` : ''}
+
+              ${state.view === 'trabajos' ? `
+                <div class="panel">
+                  <h2>${isGeneral() ? 'Todos los trabajos' : 'Mis trabajos'}</h2>
+                  <p class="subtext">La información está sincronizada online entre dispositivos.</p>
+
+                  <div class="toolbar">
+                    <input id="filter_search" placeholder="Buscar por trabajo, operario o usuario" value="${esc(state.filters.search)}">
+                    ${isGeneral() ? `
+                      <select id="filter_user">
+                        <option value="all">Todos los usuarios</option>
+                        ${workerProfiles().map(p => `
+                          <option value="${p.id}" ${state.filters.user === p.id ? 'selected' : ''}>
+                            ${esc(p.display_name)}
+                          </option>
+                        `).join('')}
+                      </select>
+                    ` : `<input disabled value="Mi usuario">`}
+                    <select id="filter_type">
+                      <option value="all">Todos los tipos</option>
+                      ${PROJECT_TYPES.map(type => `
+                        <option value="${esc(type)}" ${state.filters.type === type ? 'selected' : ''}>${esc(type)}</option>
+                      `).join('')}
+                    </select>
+                    <button class="btn btn-soft" data-action="apply-filters">Actualizar</button>
+                  </div>
+
+                  ${renderJobs()}
+                </div>
+
+                ${renderCreateJob()}
+              ` : ''}
+
+              ${state.view === 'informes' ? renderReports() : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+   function render(){
       if(state.loading){
         app.innerHTML = `<div class="loader"></div>`;
         return;
       }
 
       if(!state.session){
-        renderLogin();
+        app.innerHTML = renderLogin();
         return;
       }
 
-      app.innerHTML = `
-        ${renderHeader()}
-
-        <div class="container">
-          ${state.error ? `<div class="error-box">${esc(state.error)}</div>` : ''}
-          ${state.info ? `<div class="info-box">${esc(state.info)}</div>` : ''}
-
-          ${renderCreateJob()}
-
-          <div class="card">
-            <h3>Trabajos</h3>
-            ${renderJobs()}
-          </div>
-        </div>
-      `;
-
+      app.innerHTML = renderMain();
       refreshLiveTimes();
     }
 
-    bootstrap();
+    app.addEventListener('submit', async (e) => {
+      const form = e.target;
+
+      if(form.id === 'login-form'){
+        e.preventDefault();
+        await login(form.email.value.trim(), form.password.value);
+      }
+
+      if(form.id === 'job-form'){
+        e.preventDefault();
+        await createJob(form);
+      }
+    });
+
+    app.addEventListener('click', async (e) => {
+      const btn = e.target.closest('[data-action]');
+      if(!btn) return;
+
+      const action = btn.dataset.action;
+
+      if(action === 'logout'){
+        await logout();
+        return;
+      }
+
+      if(action === 'apply-filters'){
+        state.filters.search = document.getElementById('filter_search')?.value || '';
+        if(isGeneral()){
+          state.filters.user = document.getElementById('filter_user')?.value || 'all';
+        }
+        state.filters.type = document.getElementById('filter_type')?.value || 'all';
+        render();
+        return;
+      }
+
+      if(action === 'delete-job'){
+        await deleteJob(btn.dataset.jobId);
+        return;
+      }
+
+      if(action === 'start-task'){
+        await startTask(btn.dataset.taskId);
+        return;
+      }
+
+      if(action === 'stop-task'){
+        await stopTask(btn.dataset.taskId);
+        return;
+      }
+
+      if(action === 'save-task-name'){
+        const taskId = btn.dataset.taskId;
+        const value = document.getElementById(`task_name_${taskId}`)?.value || '';
+        await updateTaskName(taskId, value);
+        return;
+      }
+
+      if(action === 'manual-time'){
+        const taskId = btn.dataset.taskId;
+        const h = document.getElementById(`h_${taskId}`)?.value || 0;
+        const m = document.getElementById(`m_${taskId}`)?.value || 0;
+        await manualTime(taskId, h, m);
+        return;
+      }
+
+      if(action === 'save-actual'){
+        const taskId = btn.dataset.taskId;
+        const start = document.getElementById(`s_${taskId}`)?.value || '';
+        const end = document.getElementById(`e_${taskId}`)?.value || '';
+        await updateActualTimes(taskId, start, end);
+        return;
+      }
+    });
+
+    app.addEventListener('change', (e) => {
+      if(e.target.matches('.worker-pill input')){
+        e.target.closest('.worker-pill')?.classList.toggle('active', e.target.checked);
+      }
+    });
+
+    app.addEventListener('click', (e) => {
+      const navBtn = e.target.closest('[data-view]');
+      if(!navBtn) return;
+      state.view = navBtn.dataset.view;
+      render();
+    });
+
+    initApp();
   </script>
 </body>
 </html>
-
