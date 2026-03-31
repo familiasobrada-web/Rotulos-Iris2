@@ -994,26 +994,26 @@
     }
 
     async function login(email, password){
-      clearNotice();
-      render();
-
-      const { data, error } = await supabase.auth.signInWithPassword({
-  email: email,
-  password: password
-});
-
-
-
-if(error){
-  state.error = error.message;
+  clearNotice();
   render();
-} else {
-  state.user = data.user;
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: email,
+    password: password
+  });
+
+  if(error){
+    state.error = error.message;
+    render();
+    return;
+  }
+
+  state.session = data.session || null;
+  state.user = data.user || null;
   state.view = 'trabajos';
-  render();
-}
-}
 
+  await bootstrap();
+}
 
     async function logout(){
       await supabase.auth.signOut();
@@ -1403,3 +1403,4 @@ if(error){
   </script>
 </body>
 </html>
+
