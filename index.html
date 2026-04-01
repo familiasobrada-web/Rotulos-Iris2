@@ -1245,8 +1245,8 @@
         el.textContent = hms(ms);
       });
 
-      document.querySelectorAll('[data-job-id]').forEach(el => {
-        const jobId = el.dataset.jobId;
+      document.querySelectorAll('[data-live-job-id]').forEach(el => {
+        const jobId = el.dataset.livejobId;
         const job = state.jobs.find(j => j.id === jobId);
         if(!job) return;
         el.textContent = `${hoursDecimal(jobTotalMs(job))} h`;
@@ -1482,7 +1482,7 @@
                     <span class="badge primary">${esc(job.project_type || 'Sin tipo')}</span>
                     <span class="badge dark">${esc(job.operario || 'Sin operario')}</span>
                     <span class="badge success">${assignedNames(job.assigned_to).join(', ') || 'Sin asignados'}</span>
-                    <span class="badge warning" data-job-id="${job.id}">${hoursDecimal(jobTotalMs(job))} h</span>
+                    <span class="badge warning" data-live-job-id="${job.id}">${hoursDecimal(jobTotalMs(job))} h</span>
                     <span class="badge warning">${esc(job.status || 'pendiente')}</span>
 
                   </div>
