@@ -1021,7 +1021,8 @@
           assigned_to: assigned,
           created_by: currentUserId(),
           planned_start: plannedStart,
-          planned_end: plannedEnd
+          planned_end: plannedEnd,
+          status: 'pendiente'
         })
         .select()
         .single();
@@ -1481,6 +1482,8 @@
                     <span class="badge dark">${esc(job.operario || 'Sin operario')}</span>
                     <span class="badge success">${assignedNames(job.assigned_to).join(', ') || 'Sin asignados'}</span>
                     <span class="badge warning" data-job-id="${job.id}">${hoursDecimal(jobTotalMs(job))} h</span>
+                    <span class="badge warning">${esc(job.status || 'pendiente')}</span>
+
                   </div>
                   ${job.description ? `<p class="job-desc">${esc(job.description)}</p>` : ''}
                 </div>
