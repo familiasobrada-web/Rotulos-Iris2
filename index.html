@@ -1087,22 +1087,50 @@
     }
 
     async function deleteJob(jobId){
-      if(!confirm('¿Eliminar este trabajo?')) return;
+  if(!confirm('¿Eliminar este trabajo?')) return;
 
-      const { error } = await supabase
-        .from('jobs')
-        .delete()
-        .eq('id', jobId);
+  const job = state.jobs.find(j => j.id === jobId);
+  const taskIds = (job?.tasks || []).map(t => t.id);
 
-      if(error){
-        state.error = error.message;
-        render();
-        return;
-      }
+  if(taskIds.length){
+    const { error: timeError } = await supabase
+      .from('task_user_times')
+      .delete()
+      .in('task_id', taskIds);
 
-      state.info = 'Trabajo eliminado.';
-      await bootstrap(false);
+    if(timeError){
+      state.error = timeError.message;
+      render();
+      return;
     }
+
+    const { error: tasksError } = await supabase
+      .from('tasks')
+      .delete()
+      .in('id', taskIds);
+
+    if(tasksError){
+      state.error = tasksError.message;
+      render();
+      return;
+    }
+  }
+
+  const { error } = await supabase
+    .from('jobs')
+    .delete()
+    .eq('id', jobId);
+
+  if(error){
+    state.error = error.message;
+    render();
+    return;
+  }
+
+  state.info = 'Trabajo eliminado.';
+  await bootstrap(false);
+}
+
 
     async function updateTaskName(taskId, value){
       const clean = value.trim() || 'Sin nombre';
