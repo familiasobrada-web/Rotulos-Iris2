@@ -956,10 +956,11 @@
       state.loading = true;
       render();
 
-      const { user, session, error } = await supabase.auth.signIn({
+      const { data, error } = await supabase.auth.signInWithPassword({
   email,
   password
 });
+
 
 
       if(error){
@@ -969,7 +970,7 @@
         return;
       }
 
-      state.session = session || null;
+      state.session = data.session || null;
       await bootstrap(false);
     }
 
