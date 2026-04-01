@@ -1510,10 +1510,6 @@
                     <span class="badge primary">${esc(job.project_type || 'Sin tipo')}</span>
                     <span class="badge dark">${esc(job.operario || 'Sin operario')}</span>
                     <span class="badge success">${assignedNames(job.assigned_to).join(', ') || 'Sin asignados'}</span>
-                    <button class="btn btn-danger" data-action="delete-job" data-job-id="${job.id}">
-                        Eliminar trabajo
-                        </button>
-
                     <span class="badge warning">${esc(job.status || 'pendiente')}</span>
 
                   </div>
@@ -1524,6 +1520,12 @@
                   <div>Inicio previsto: ${fmtDate(job.planned_start)}</div>
                   <div>Fin previsto: ${fmtDate(job.planned_end)}</div>
                 </div>
+                <div class="job-actions">
+                    <button class="btn btn-danger" data-action="delete-job" data-job-id="${job.id}">
+                          Eliminar trabajo
+                            </button>
+                  </div>
+
               </div>
 
               <div class="tasks-grid">
