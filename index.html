@@ -1482,7 +1482,10 @@
                     <span class="badge primary">${esc(job.project_type || 'Sin tipo')}</span>
                     <span class="badge dark">${esc(job.operario || 'Sin operario')}</span>
                     <span class="badge success">${assignedNames(job.assigned_to).join(', ') || 'Sin asignados'}</span>
-                    <span class="badge warning" data-live-job-id="${job.id}">${hoursDecimal(jobTotalMs(job))} h</span>
+                    <button class="btn btn-danger" data-action="delete-job" data-job-id="${job.id}">
+                        Eliminar trabajo
+                        </button>
+
                     <span class="badge warning">${esc(job.status || 'pendiente')}</span>
 
                   </div>
@@ -1494,14 +1497,6 @@
                   <div>Fin previsto: ${fmtDate(job.planned_end)}</div>
                 </div>
               </div>
-
-              ${isGeneral() ? `
-                <div class="job-actions">
-                  <button class="btn btn-danger" data-action="delete-job" data-job-id="${job.id}">
-                    Eliminar trabajo
-                  </button>
-                </div>
-              ` : ''}
 
               <div class="tasks-grid">
                 ${(job.tasks || []).map(task => renderTask(task)).join('')}
